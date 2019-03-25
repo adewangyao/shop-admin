@@ -72,10 +72,14 @@ export default {
     },
     async login () {
       var resData = await axios.post('http://localhost:8888/api/private/v1/login', this.loginForm)
-      console.log(resData)
       var res = resData.data.data
       if (res) {
-        this.$router.replace('/')
+        if (res.status === 401) {
+          this.$router.push('.login')
+        } else {
+          this.$router.replace('/')
+        }
+        window.localStorage.setItem('token', res.token)
       } else {
         this.$message.error(`登录失败：${resData.data.meta.msg}`)
       }

@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/views/Login'
-import about from '@/views/About.vue'
+import Layout from '@/views/Layout'
+import userlist from '@/views/userlist'
 
 Vue.use(Router)
 
-export default new Router({
+const Drouter = new Router({
   routes: [
     {
       path: '/login',
@@ -13,12 +14,30 @@ export default new Router({
       component: Login
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: about
+      path: '/',
+      name: 'Layout',
+      component: Layout,
+      // 嵌套路由，layout的嵌套路由
+      children: [
+        {
+          path: '/users',
+          name: 'user',
+          component: userlist
+        }
+      ]
     }
   ]
 })
+
+Drouter.beforeEach((to, from, next) => {
+  const token = window.localStorage.getItem('token')
+  if (to.path === '/login') {
+    return next()
+  }
+  if (!token) {
+    return next({ path: '/login' })
+  }
+  next()
+})
+
+export default Drouter
