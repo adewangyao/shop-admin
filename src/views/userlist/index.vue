@@ -10,7 +10,7 @@
     </div>
     <el-row :gutter="20">
       <el-col :span="6">
-        <el-input placeholder="请输入内容" v-model="searchText">
+        <el-input placeholder="请输入内容" v-model="searchText" @keyup.enter.native="onload()">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
       </el-col>
@@ -81,7 +81,7 @@ export default {
   },
   methods: {
     async  onload () {
-      const { data } = await getUserList({ pagenum: 1, pagesize: 100 })
+      const { data } = await getUserList({query:this.searchText, pagenum: 1, pagesize: 100 })
       console.log(data)
       this.users = data.users
     },
