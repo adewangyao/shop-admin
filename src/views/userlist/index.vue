@@ -24,18 +24,32 @@
       <el-table-column prop="username" label="姓名" width="180"></el-table-column>
       <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
       <el-table-column prop="mobile" label="电话"></el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            @click="$refs.userEditEl.showEditFormVisible(scope.row)">编辑</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleUserDelete(scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 用户添加 -->
     <UserAdd ref="userAddEl" v-on:add-success="onload"></UserAdd>
+    <!-- 用户编辑 -->
+    <EditUser ref="userEditEl" v-on:edit-success="onload"></EditUser>
   </el-card>
 </template>
+
 <script>
-import { getUserList } from '@/api/user.js'
+import { getUserList, delUser } from '@/api/user.js'
 import UserAdd from './adduser.vue'
+import EditUser from './edituser.vue'
 export default {
   name: 'userlist',
   created () {
-    console.log(UserAdd)
     this.onload()
   },
   data () {
@@ -49,10 +63,33 @@ export default {
       const { data } = await getUserList({ pagenum: 1, pagesize: 100 })
       console.log(data)
       this.users = data.users
+    },
+    handleUserDelete (row) {
+      this.$confirm('确认删除该用户么', '删除用户', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => { // 确认
+        const { meta } = await delUser(row.id)
+        if (meta.status === 200) {
+          this.$message({
+            type: 'success',
+            message: '删除成功！'
+          })
+          this.onload()
+        }
+      }).catch((err) => { // 取消
+        console.log(err)
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   },
   components: {
-    UserAdd
+    UserAdd,
+    EditUser
   }
 }
 </script>

@@ -19,3 +19,23 @@ export const addUser = ({ username, password, email, mobile }) => axios({
     mobile
   }
 }).then(res => res.data)
+// 删除用户
+export const delUser = (id) => axios({
+  method: 'delete',
+  url: `/users/${id}`
+}).then(res => res.data)
+// 根据用户id查询信息
+export const getUserById = (id) => axios({
+  method: 'get',
+  url: `/users/${id}`
+}).then(res => res.data)
+// 编辑用户信息
+export const editUserById = ({ id, email, mobile }) => axios({
+  method: 'put',
+  url: `users/${id}`,
+  data: {
+    email,
+    mobile
+  }
+
+})
