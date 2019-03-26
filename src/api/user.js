@@ -1,5 +1,5 @@
 import axios from '@/untils/request.js'
-export const getUserList = ({ query,pagenum = 1, pagesize = 1000 }) => axios({ // const { pagenum = 1, pagesize = 5 } = 你传递的那个对象
+export const getUserList = ({ query, pagenum = 1, pagesize = 1000 }) => axios({ // const { pagenum = 1, pagesize = 5 } = 你传递的那个对象
   method: 'GET',
   url: '/users',
   params: { // 传递 GET 参数
@@ -45,7 +45,7 @@ export const changeState = (id, state) => axios({
   url: `/users/${id}/state/${state}`
 }).then(res => res.data)
 // 分配角色
-export const userRole = ({id,rid}) => axios({
+export const userRole = ({ id, rid }) => axios({
   method: 'put',
   url: `users/${id}/role`,
   data: {

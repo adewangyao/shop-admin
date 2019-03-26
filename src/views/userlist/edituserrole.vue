@@ -27,7 +27,7 @@
   </el-dialog>
 </template>
 <script>
-import { getUserById, editUserById, userRole} from '@/api/user.js'
+import { getUserById, userRole } from '@/api/user.js'
 import { getRoleList } from '@/api/role.js'
 export default {
   data () {
@@ -53,7 +53,7 @@ export default {
     async showRoleFormVisible (item) {
       const { data } = await getUserById(item.id)
       this.EditForm = data
-      const { data: roleData, meta: roleMeta } = await getRoleList()
+      const { data: roleData } = await getRoleList()
       this.roles = roleData
       this.editFormVisible = true
     },

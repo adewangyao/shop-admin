@@ -54,6 +54,18 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 分页 -->
+    <div class="block">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage4"
+        :page-sizes="[5, 10, 20]"
+        :page-size="5"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="totalNum">
+      </el-pagination>
+    </div>
     <!-- 用户添加 -->
     <UserAdd ref="userAddEl" v-on:add-success="onload"></UserAdd>
     <!-- 用户编辑 -->
@@ -75,15 +87,19 @@ export default {
   },
   data () {
     return {
+      currentPage4: 4,
       users: [],
-      searchText: ''
+      searchText: '',
+      pagenNum: '1',
+      pageSize: '5',
+      totalNum: ' '
     }
   },
   methods: {
     async  onload () {
-      const { data } = await getUserList({query:this.searchText, pagenum: 1, pagesize: 100 })
-      console.log(data)
+      const { data } = await getUserList({ query: this.searchText, pagenum: this.pagenNum, pagesize: this.pageSize })
       this.users = data.users
+      this.totalNum = data.total
     },
     handleUserDelete (row) {
       this.$confirm('确认删除该用户么', '删除用户', {
@@ -115,6 +131,15 @@ export default {
           message: `${data.mg_state ? '启用' : '禁用'}用户状态成功`
         })
       }
+    },
+    // 分页方法
+    handleSizeChange (val) {
+      this.pageSize = val
+      this.onload()
+    },
+    handleCurrentChange (val) {
+      this.pagenNum = val
+      this.onload()
     }
   },
   components: {
@@ -137,5 +162,8 @@ export default {
 }
 .userListName {
   float: left;
+}
+.block {
+  margin-top: 20px;
 }
 </style>
