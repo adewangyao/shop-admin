@@ -24,6 +24,16 @@
       <el-table-column prop="username" label="姓名" width="180"></el-table-column>
       <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
       <el-table-column prop="mobile" label="电话"></el-table-column>
+      <el-table-column label="用户状态">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.mg_state"
+            @change="handleChangeState(scope.row)"
+            active-text="开启"
+            inactive-text="关闭">
+          </el-switch>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
@@ -35,18 +45,29 @@
             @click="handleUserDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
+      <el-table-column label="操作分类">
+        <template slot-scope="scope">
+          <el-button
+            type="primary"
+            size="mini"
+            @click="$refs.userRoleEl.showRoleFormVisible(scope.row)">分类角色</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 用户添加 -->
     <UserAdd ref="userAddEl" v-on:add-success="onload"></UserAdd>
     <!-- 用户编辑 -->
     <EditUser ref="userEditEl" v-on:edit-success="onload"></EditUser>
+    <!-- 用户状态改变 -->
+    <EditUserRole ref="userRoleEl"></EditUserRole>
   </el-card>
 </template>
 
 <script>
-import { getUserList, delUser } from '@/api/user.js'
+import { getUserList, delUser, changeState } from '@/api/user.js'
 import UserAdd from './adduser.vue'
 import EditUser from './edituser.vue'
+import EditUserRole from './edituserrole.vue'
 export default {
   name: 'userlist',
   created () {
@@ -85,11 +106,21 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    async handleChangeState (item) {
+      const { meta, data } = await changeState(item.id, item.mg_state)
+      if (meta.status === 200) {
+        this.$message({
+          type: 'success',
+          message: `${data.mg_state ? '启用' : '禁用'}用户状态成功`
+        })
+      }
     }
   },
   components: {
     UserAdd,
-    EditUser
+    EditUser,
+    EditUserRole
   }
 }
 </script>

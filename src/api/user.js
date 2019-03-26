@@ -37,5 +37,17 @@ export const editUserById = ({ id, email, mobile }) => axios({
     email,
     mobile
   }
-
+})
+// 改变用户状态
+export const changeState = (id, state) => axios({
+  method: 'PUT',
+  url: `/users/${id}/state/${state}`
+}).then(res => res.data)
+// 分配角色
+export const userRole = ({id,rid}) => axios({
+  method: 'put',
+  url: `users/${id}/role`,
+  data: {
+    rid
+  }
 })
