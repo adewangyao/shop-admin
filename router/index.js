@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Login from '@/views/Login'
 import Layout from '@/views/Layout'
 import userlist from '@/views/userlist'
+import rightslist from '@/views/rightLists'
+import rolerightlist from '@/views/rolerightlist'
 
 Vue.use(Router)
 
@@ -23,6 +25,16 @@ const Drouter = new Router({
           path: '/users',
           name: 'user',
           component: userlist
+        },
+        {
+          path: '/rightslist',
+          name: 'righstlist',
+          component: rightslist
+        },
+        {
+          path: '/roleright',
+          name: 'roleright',
+          component: rolerightlist
         }
       ]
     }
