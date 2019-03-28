@@ -50,6 +50,7 @@ export default {
     async loadTree () {
       const { data, meta } = await getRightList('tree')
       if (meta.status === 200) {
+        console.log(data)
         this.treedatas = data
       }
     },
@@ -58,7 +59,6 @@ export default {
       const checkedKey = this.$refs.tree.getCheckedKeys()
       const checkedKeyS = this.$refs.tree.getHalfCheckedKeys()
       const rids = [...checkedKey, ...checkedKeyS].join(',')
-      console.log(rids)
       const { data } = await giveRoleRight(this.roleId, rids)
       if (data.meta.status === 200) {
         this.dialogFormVisible = false

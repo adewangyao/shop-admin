@@ -13,3 +13,8 @@ export const giveRoleRight = (roleId, rids) => axios({
     rids
   }
 })
+// 删除角色
+export const tagDeleRight = (roleId, rightId) => axios({
+  method: 'delete',
+  url: `roles/${roleId}/rights/${rightId}`
+})

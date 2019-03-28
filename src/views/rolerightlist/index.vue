@@ -19,6 +19,7 @@
                 <el-col :span="3">
                   <el-tag
                     closable
+                    @close="tagclose(props.row,first.id)"
                     type="">
                     {{first.authName}}
                   </el-tag>
@@ -28,6 +29,7 @@
                     <el-col :span="3">
                       <el-tag
                       closable
+                      @close="tagclose(props.row,second.id)"
                       type="success">
                       {{second.authName}}
                       </el-tag>
@@ -37,6 +39,8 @@
                         v-for="third in second.children"
                         :key="third.id"
                         closable
+                        @close="tagclose(props.row,third.id)"
+                        :disable-transitions="false"
                         class="borederthree"
                         type="warning">
                         {{third.authName}}
@@ -74,7 +78,7 @@
   </el-card>
 </template>
 <script>
-import { getRoleList } from '@/api/role'
+import { getRoleList, tagDeleRight } from '@/api/role'
 import handeleRole from './addrole'
 import assignRights from './assignright'
 export default {
@@ -87,7 +91,13 @@ export default {
     async roleload () {
       const { data } = await getRoleList()
       this.tableData = data
-      console.log(this.tableData)
+    },
+    async tagclose (role, rightId) {
+      console.log(role)
+      const { data } = await tagDeleRight(role.id, rightId)
+      if (data.meta.status === 200) {
+        role.children = data.data
+      }
     }
   },
   components: {
