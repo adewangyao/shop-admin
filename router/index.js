@@ -27,12 +27,12 @@ const Drouter = new Router({
           component: userlist
         },
         {
-          path: '/rightslist',
+          path: '/rights',
           name: 'righstlist',
           component: rightslist
         },
         {
-          path: '/roleright',
+          path: '/roles',
           name: 'roleright',
           component: rolerightlist
         }

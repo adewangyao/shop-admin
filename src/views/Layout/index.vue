@@ -26,54 +26,17 @@
               @close="handleClose"
               :router="true"
             >
-              <el-submenu index="1">
+              <el-submenu :index="item.path" v-for="item in menus" :key="item.id" >
                 <template slot="title" class="titleSide">
                   <i class="el-icon-location"></i>
-                  <span>用户管理</span>
+                  <span>{{item.authName}}</span>
                 </template>
                 <el-menu-item-group >
-                  <el-menu-item index="/users">用户列表</el-menu-item>
+                  <el-menu-item :index="`/${first.path}`" v-for="first in item.children" :key="first.id">
+                  {{first.authName}}</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
-              <el-submenu index="2">
-                <template slot="title">
-                  <i class="fa fa-address-book" style="margin-right:4px"></i>
-                  <span>权限管理</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item index="/roleright">角色列表</el-menu-item>
-                  <el-menu-item index="/rightslist">权限列表</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
-              <el-submenu index="3">
-                <template slot="title">
-                  <i class="el-icon-menu"></i>
-                  <span>商品管理</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item index="3-1">商品列表</el-menu-item>
-                  <el-menu-item index="3-2">分类参数</el-menu-item>
-                  <el-menu-item index="3-3">商品分类</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
-              <el-submenu index="4">
-                <template slot="title">
-                  <i class="el-icon-menu"></i>
-                  <span>订单管理</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item index="4-1">订单列表</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
-              <el-submenu index="5">
-                <template slot="title">
-                  <i class="el-icon-menu"></i>
-                  <span>数据统计</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item index="5-1">统计列表</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
+
             </el-menu>
           </el-aside>
         </el-col>
@@ -90,7 +53,16 @@
 
 <script>
 import { removeToken } from '@/untils/auth.js'
+import { menuRight } from '@/api/menu'
 export default {
+  data () {
+    return {
+      menus: []
+    }
+  },
+  created () {
+    this.loadRightsMenu()
+  },
   methods: {
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
@@ -117,6 +89,10 @@ export default {
           message: '已取消退出'
         })
       })
+    },
+    async loadRightsMenu () {
+      const { data } = await menuRight()
+      this.menus = data.data
     }
   }
 }
