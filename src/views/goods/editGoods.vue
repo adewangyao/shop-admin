@@ -66,15 +66,18 @@
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </el-tab-pane>
-        <el-tab-pane label="商品内容">商品内容</el-tab-pane>
+        <el-tab-pane label="商品内容">
+          <editor></editor>
+        </el-tab-pane>
       </el-tabs>
   </el-card>
 </template>
 <script>
 import { goodsCategories } from '@/api/goods'
+import editor from '@/views/goods/wangEdit'
 export default {
   name: 'goodsEdit',
-  data() {
+  data () {
     return {
       uploadHeaders: {
         Authorization: window.localStorage.getItem('token')
@@ -119,10 +122,10 @@ export default {
       console.log(value)
     },
     handleRemove (file, fileList) {
-      console.log(file, fileList);
+      console.log(file, fileList)
     },
     handlePreview (file) {
-      console.log(1);
+      console.log(1)
     },
     handleAvatarSuccess (res, file) {
       console.log(1)
@@ -133,16 +136,14 @@ export default {
       console.log(file)
       console.log(fileList)
     },
-    handleUpload (event,  file,  fileList) {
+    handleUpload (event, file, fileList) {
       console.log(event)
       console.log(file)
       console.log(fileList)
-    },
-    handleChange (file, fileList) {
-      console.log(this.fileList,1)
-      console.log(file)
-      console.log(fileList)
     }
+  },
+  components: {
+    editor
   }
 }
 </script>
