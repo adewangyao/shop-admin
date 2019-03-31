@@ -65,8 +65,8 @@
       <el-table-column
         label="操作">
           <template slot-scope="scope">
-          <el-button size="mini" type="primary" plain>编辑</el-button>
-          <el-button size="mini" type="danger" plain>删除</el-button>
+          <el-button size="mini" type="primary" plain @click="$refs.editRoleEl.showEditRole(scope.row)">编辑</el-button>
+          <el-button size="mini" type="danger" plain @click="deletRole(scope.row.id)">删除</el-button>
           <el-button size="mini" type="warning" plain @click="$refs.assignRightsEl.showAssignRight(scope.row)">分配权限</el-button>
           </template>
       </el-table-column>
@@ -75,12 +75,15 @@
     <handeleRole ref="handeleRoleEl" v-on:addRole-success="roleload"></handeleRole>
     <!-- 分配权限 -->
     <assignRights ref="assignRightsEl" v-on:assign-success="roleload"></assignRights>
+    <!-- 编辑角色 -->
+    <editRole ref="editRoleEl" v-on:editrole-success="roleload"></editRole>
   </el-card>
 </template>
 <script>
-import { getRoleList, tagDeleRight } from '@/api/role'
+import { getRoleList, tagDeleRight, delRole } from '@/api/role'
 import handeleRole from './addrole'
 import assignRights from './assignright'
+import editRole from './editrole'
 export default {
   data () {
     return {
@@ -98,11 +101,22 @@ export default {
       if (data.meta.status === 200) {
         role.children = data.data
       }
+    },
+    async deletRole (id) {
+      const { data } = await delRole(id)
+      if (data.meta.status === 200) {
+        this.roleload()
+        this.$message({
+          type: 'success',
+          message: `${data.meta.msg}`
+        })
+      }
     }
   },
   components: {
     handeleRole,
-    assignRights
+    assignRights,
+    editRole
   },
   created () {
     this.roleload()

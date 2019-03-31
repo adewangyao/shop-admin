@@ -5,6 +5,8 @@ import Layout from '@/views/Layout'
 import userlist from '@/views/userlist'
 import rightslist from '@/views/rightLists'
 import rolerightlist from '@/views/rolerightlist'
+import goods from '@/views/goods'
+import editgoods from '@/views/goods/editGoods'
 
 Vue.use(Router)
 
@@ -35,6 +37,16 @@ const Drouter = new Router({
           path: '/roles',
           name: 'roleright',
           component: rolerightlist
+        },
+        {
+          path: '/goods',
+          name: 'goods',
+          component: goods
+        },
+        {
+          path: '/editgoods',
+          name: 'editgoods',
+          component: editgoods
         }
       ]
     }

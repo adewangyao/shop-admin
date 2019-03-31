@@ -13,8 +13,22 @@ export const giveRoleRight = (roleId, rids) => axios({
     rids
   }
 })
-// 删除角色
+// 删除q权限
 export const tagDeleRight = (roleId, rightId) => axios({
   method: 'delete',
   url: `roles/${roleId}/rights/${rightId}`
+})
+// 删除角色
+export const delRole = (id) => axios({
+  method: 'delete',
+  url: `roles/${id}`
+})
+// 编辑角色
+export const editRole = ({ roleName, roleDesc }, id) => axios({
+  method: 'put',
+  url: `roles/${id}`,
+  data: {
+    roleName,
+    roleDesc
+  }
 })
